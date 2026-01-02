@@ -35,14 +35,18 @@ echo ""
 echo "Step 2: Setting up ComfyUI..."
 
 # Clone ComfyUI if not exists
-if [ ! -d "$ROOT/ComfyUI" ]; then
-    echo "Cloning ComfyUI..."
-    git clone https://github.com/comfyanonymous/ComfyUI.git "$ROOT/ComfyUI"
-else
-    echo "ComfyUI already exists, updating..."
+# Check if ComfyUI is a proper git repository
+if [ -d "$ROOT/ComfyUI/.git" ]; then
+    echo "ComfyUI git repository exists, updating..."
     cd "$ROOT/ComfyUI"
-    git pull
+    git pull || echo "Warning: Could not update ComfyUI (continuing anyway)"
     cd "$ROOT"
+elif [ -d "$ROOT/ComfyUI" ]; then
+    echo "ComfyUI directory exists but is not a git repo - using existing installation"
+    # Just use what's there - no action needed
+else
+    echo "Cloning ComfyUI from scratch..."
+    git clone https://github.com/comfyanonymous/ComfyUI.git "$ROOT/ComfyUI"
 fi
 
 cd "$ROOT/ComfyUI"
