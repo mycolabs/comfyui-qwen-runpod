@@ -4,7 +4,7 @@ set -u  # Exit on undefined variable
 set -o pipefail  # Exit on pipe failure
 
 echo "========================================="
-echo "ComfyUI Qwen Setup - Fixed Version v2"
+echo "ComfyUI Qwen Setup - Final Working Version"
 echo "========================================="
 
 # Set workspace root
@@ -75,7 +75,7 @@ LORA_DIR="$ROOT/ComfyUI/models/loras"
 mkdir -p "$DIFFUSION_DIR" "$TEXT_ENCODER_DIR" "$VAE_DIR" "$LORA_DIR"
 
 # ============================================
-# STEP 5: Download Qwen Models
+# STEP 5: Download Qwen Models (YOUTUBER'S EXACT MODELS)
 # ============================================
 echo ""
 echo "Step 5: Downloading Qwen models..."
@@ -86,40 +86,40 @@ if ! command -v aria2c &> /dev/null; then
     apt-get update && apt-get install -y aria2
 fi
 
-# Model URLs
-DIFFUSION_URL="https://huggingface.co/Comfy-Org/Qwen-Image-Edit-2511_mirror/resolve/main/diffusion_models/qwen2vl-2b-ae-v1_1-fp16-img-edit.safetensors"
-TEXT_ENCODER_URL="https://huggingface.co/Comfy-Org/Qwen-Image-Edit-2511_mirror/resolve/main/text_encoders/qwen2vl_text_encoder_2b.safetensors"
-VAE_URL="https://huggingface.co/Comfy-Org/Qwen-Image-Edit-2511_mirror/resolve/main/vae/qwen2vl-2b-ae-v1_1-fp16-ae.safetensors"
-LORA_URL="https://huggingface.co/Comfy-Org/Qwen-Image-Edit-2511_mirror/resolve/main/loras/qwen2vl-2b-ae-v1_1-lightning-img-edit.safetensors"
+# YOUTUBER'S EXACT MODEL URLS - PROVEN TO WORK
+DIFFUSION_URL="https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors"
+TEXT_ENCODER_URL="https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors"
+VAE_URL="https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors"
+LORA_URL="https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Lightning-4steps-V1.0.safetensors"
 
 # Download main diffusion model
-if [ ! -f "$DIFFUSION_DIR/qwen2vl-2b-ae-v1_1-fp16-img-edit.safetensors" ]; then
+if [ ! -f "$DIFFUSION_DIR/qwen_image_edit_fp8_e4m3fn.safetensors" ]; then
     echo "Downloading Qwen diffusion model (this may take a while)..."
-    aria2c -x 10 -s 10 --dir="$DIFFUSION_DIR" --out="qwen2vl-2b-ae-v1_1-fp16-img-edit.safetensors" "$DIFFUSION_URL"
+    aria2c -x 10 -s 10 --dir="$DIFFUSION_DIR" --out="qwen_image_edit_fp8_e4m3fn.safetensors" "$DIFFUSION_URL"
 else
     echo "✓ Diffusion model already exists"
 fi
 
 # Download text encoder
-if [ ! -f "$TEXT_ENCODER_DIR/qwen2vl_text_encoder_2b.safetensors" ]; then
+if [ ! -f "$TEXT_ENCODER_DIR/qwen_2.5_vl_7b_fp8_scaled.safetensors" ]; then
     echo "Downloading Qwen text encoder..."
-    aria2c -x 10 -s 10 --dir="$TEXT_ENCODER_DIR" --out="qwen2vl_text_encoder_2b.safetensors" "$TEXT_ENCODER_URL"
+    aria2c -x 10 -s 10 --dir="$TEXT_ENCODER_DIR" --out="qwen_2.5_vl_7b_fp8_scaled.safetensors" "$TEXT_ENCODER_URL"
 else
     echo "✓ Text encoder already exists"
 fi
 
 # Download VAE
-if [ ! -f "$VAE_DIR/qwen2vl-2b-ae-v1_1-fp16-ae.safetensors" ]; then
+if [ ! -f "$VAE_DIR/qwen_image_vae.safetensors" ]; then
     echo "Downloading Qwen VAE..."
-    aria2c -x 10 -s 10 --dir="$VAE_DIR" --out="qwen2vl-2b-ae-v1_1-fp16-ae.safetensors" "$VAE_URL"
+    aria2c -x 10 -s 10 --dir="$VAE_DIR" --out="qwen_image_vae.safetensors" "$VAE_URL"
 else
     echo "✓ VAE already exists"
 fi
 
 # Download Lightning LoRA
-if [ ! -f "$LORA_DIR/qwen2vl-2b-ae-v1_1-lightning-img-edit.safetensors" ]; then
+if [ ! -f "$LORA_DIR/Qwen-Image-Lightning-4steps-V1.0.safetensors" ]; then
     echo "Downloading Lightning LoRA..."
-    aria2c -x 10 -s 10 --dir="$LORA_DIR" --out="qwen2vl-2b-ae-v1_1-lightning-img-edit.safetensors" "$LORA_URL"
+    aria2c -x 10 -s 10 --dir="$LORA_DIR" --out="Qwen-Image-Lightning-4steps-V1.0.safetensors" "$LORA_URL"
 else
     echo "✓ Lightning LoRA already exists"
 fi
