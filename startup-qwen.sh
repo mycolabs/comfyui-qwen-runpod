@@ -4,7 +4,7 @@ set -u  # Exit on undefined variable
 set -o pipefail  # Exit on pipe failure
 
 echo "========================================="
-echo "ComfyUI Qwen Setup - Fixed Version"
+echo "ComfyUI Qwen Setup - Fixed Version v2"
 echo "========================================="
 
 # Set workspace root
@@ -29,25 +29,17 @@ python3 -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"
 python3 -c "import torch; print(f'CUDA version: {torch.version.cuda}')"
 
 # ============================================
-# STEP 2: Setup ComfyUI
+# STEP 2: Setup ComfyUI (FORCE FRESH CLONE)
 # ============================================
 echo ""
 echo "Step 2: Setting up ComfyUI..."
 
-# Clone ComfyUI if not exists
-# Check if ComfyUI is a proper git repository
-if [ -d "$ROOT/ComfyUI/.git" ]; then
-    echo "ComfyUI git repository exists, updating..."
-    cd "$ROOT/ComfyUI"
-    git pull || echo "Warning: Could not update ComfyUI (continuing anyway)"
-    cd "$ROOT"
-elif [ -d "$ROOT/ComfyUI" ]; then
-    echo "ComfyUI directory exists but is not a git repo - using existing installation"
-    # Just use what's there - no action needed
-else
-    echo "Cloning ComfyUI from scratch..."
-    git clone https://github.com/comfyanonymous/ComfyUI.git "$ROOT/ComfyUI"
-fi
+# Always remove and clone fresh to avoid git issues
+echo "Removing old ComfyUI installation (if exists)..."
+rm -rf "$ROOT/ComfyUI"
+
+echo "Cloning ComfyUI fresh..."
+git clone https://github.com/comfyanonymous/ComfyUI.git "$ROOT/ComfyUI"
 
 cd "$ROOT/ComfyUI"
 
@@ -153,7 +145,7 @@ echo "========================================="
 echo "Setup Complete! Starting ComfyUI..."
 echo "========================================="
 echo ""
-echo "Access ComfyUI at: http://localhost:${PORT:-8188}"
+echo "Access ComfyUI at port ${PORT:-8188}"
 echo ""
 
 cd "$ROOT/ComfyUI"
