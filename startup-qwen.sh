@@ -4,7 +4,7 @@ set -u  # Exit on undefined variable
 set -o pipefail  # Exit on pipe failure
 
 echo "========================================="
-echo "ComfyUI Qwen Setup - Final Working Version"
+echo "ComfyUI Qwen Setup - Independent Version"
 echo "========================================="
 
 # Set workspace root
@@ -60,6 +60,25 @@ if [ ! -d "$ROOT/ComfyUI/custom_nodes/ComfyUI-Manager" ]; then
 else
     echo "ComfyUI Manager already installed"
 fi
+
+# ============================================
+# STEP 3B: Install Qwen Workflow (FROM YOUR OWN REPO!)
+# ============================================
+echo ""
+echo "Step 3b: Installing Qwen Image Edit workflow..."
+
+# USING YOUR OWN GITHUB REPO NOW - NO MORE DEPENDENCY ON YOUTUBER!
+WORKFLOW_URL="https://raw.githubusercontent.com/mycolabs/comfyui-qwen-runpod/main/qwen_image_edit.json"
+
+# Create workflow directories
+mkdir -p "$ROOT/ComfyUI/web/assets/workflows/Qwen"
+mkdir -p "$ROOT/ComfyUI/user/default/workflows"
+
+# Download and install workflow in multiple locations for sidebar visibility
+curl -fsSL "$WORKFLOW_URL" -o "$ROOT/ComfyUI/user/default/workflows/Qwen_Image_Edit.json"
+curl -fsSL "$WORKFLOW_URL" -o "$ROOT/ComfyUI/web/assets/workflows/Qwen/Qwen Image Edit.json"
+
+echo "✓ Qwen workflow installed from your own repository"
 
 # ============================================
 # STEP 4: Create Model Directories
